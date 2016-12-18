@@ -1,23 +1,27 @@
-<img src = "{{job.job_logo}}">
+{% extends "Tasks/base.html" %}
 
-<h1>{{job.label}}</h1>
-<h3>{{job.priority_level}}</h3>
+{% block body %}
+     <img src = "{{job.job_logo}}">
+
+        <h1>{{job.label}}</h1>
+        <h3>{{job.priority_level}}</h3>
 
 
-{% if error_message %}
-    <p><strong>{{ error_message }}</strong></p>
-{% endif %}
+        {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
 
-<form action = "{%url 'Tasks:achieved' job.id %}" method="post">
-    {% csrf_token %}
-    {% for goals in job.goal_set.all %}
-        <input type = "radio" id = "goals{{ forloop.counter }}" name="goals" value = "{{goals.id}}" />
-        <label for = "goals{{ forloop.counter }}">
-            {{ goals.illustrate}}
-            {% if goals.achieved %}
-                <img src="https://www.google.co.in/imgres?imgurl=h" />
-            {% endif %}
-        </label><br>
-    {% endfor %}
-    <input type="submit" value="achieved">
-</form>
+        <form action = "{%url 'Tasks:achieved' job.id %}" method="post">
+            {% csrf_token %}
+            {% for goals in job.goal_set.all %}
+                <input type = "radio" id = "goals{{ forloop.counter }}" name="goals" value = "{{goals.id}}" />
+                <label for = "goals{{ forloop.counter }}">
+                    {{ goals.illustrate}}
+                    {% if goals.achieved %}
+                        <img src="https://www.google.co.in/imgres?imgurl=h" />
+                    {% endif %}
+                </label><br>
+            {% endfor %}
+            <input type="submit" value="achieved">
+        </form>
+{% endblock %}
