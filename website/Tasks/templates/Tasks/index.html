@@ -2,8 +2,7 @@
 {% extends "Tasks/base.html" %}
 
 {% block body %}
-    {% if all_jobs %}
-    <h3> Here are all the Tasks at hand</h3>
+
     <ul>
             {% for action in all_jobs %}
             <li><a href = "{% url 'Tasks:detail' action.id %}">{{action.label}}
@@ -11,9 +10,5 @@
             </li>
             {% endfor %}
         </ul>
-    {% else %}
-        <h4>
-            You don't have any jobs listed
-        </h4>
-    {% endif %}
+
 {% endblock %}
