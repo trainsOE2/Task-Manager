@@ -1,25 +1,14 @@
-from django.http import Http404
-from django.shortcuts import render, get_object_or_404
-from .models import Job, Goal
+from django.views import generic
+from .models import Job
 
-def index(request):
-    all_jobs = Job.objects.all()
-    return render(request,'Tasks/index.html', {'all_jobs' : all_jobs})
+class IndexView(generic.ListView):
+    template_name = 'Tasks/index.html'
+    context_object_name = 'all_jobs'
 
-def detail(request, job_id):
-    job = get_object_or_404(Job, pk=job_id)
-    return render(request, 'Tasks/detail.html', {'job' : job})
+    def get_queryset(self):
+        return Job.objects.all()
 
-def achieved(request, job_id) :
-    job = get_object_or_404(Job, pk=job_id)
-    try:
-        selected_goal = job.goal_set.get(pk = request.POST['goals'])
-    except(KeyError, Goal.DoesNotExist):
-        return render(request, 'Tasks/detail.html',{
-            'job' : job,
-            'error message' : "Invalid choice",
-        })
-    else:
-        selected_goal.achieved = True
-        selected_goal.save()
-        return render(request, 'Tasks/detail.html', {'job': job})
+class DetailView(generic.DetailView):
+    model = Job
+    template_name = 'Tasks/detail.html'
+
